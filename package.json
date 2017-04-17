@@ -1,0 +1,28 @@
+{
+  "name": "testnybl",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "jade": "^1.11.0",
+    "mysql": "^2.13.0",
+    "pdfkit": "^0.8.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VladKorbut/testnybl.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/VladKorbut/testnybl/issues"
+  },
+  "homepage": "https://github.com/VladKorbut/testnybl#readme"
+}
