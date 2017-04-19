@@ -88,7 +88,7 @@ function genPdf(user){
 				({status:true})
 			});
 		pdf.create(html).toStream(function(err, stream){
-			stream.pipe(fs.createWriteStream('./foo.pdf'));
+			stream.pipe(fs.createWriteStream('./file.pdf'));
 			
 		});
 	  });
