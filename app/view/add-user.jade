@@ -1,17 +1,13 @@
-html
-	head
-		title="Test nybl"
-		link(rel='stylesheet', href='https://bootswatch.com/paper/bootstrap.min.css')
-	body
-		.container
-			form(action='/add-user' method='post')
-				.form-group
-					label(for='name') Name:
-					input.form-control(placeholder='name', name='name')
-				.form-group
-					label(for='lastname') lastname:
-					input.form-control(placeholder='lastname', name='lastname')
-				.form-group
-					span Choose file
-						input.btn.btn-default.btn-file(type="file", name='file')
-				button.btn.btn-primary(type='submit') add
+include header
+.container
+	form(action='/add-user' method='post')
+		.form-group
+			label(for='name') Name:
+			input.form-control(placeholder='name', name='name')
+		.form-group
+			label(for='lastname') lastname:
+			input.form-control(placeholder='lastname', name='lastname')
+		.form-group
+			span Choose file
+				input.btn.btn-default.btn-file(type="file", name='file')
+		button.btn.btn-primary(type='submit') add

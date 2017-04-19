@@ -54,13 +54,24 @@ app.post('/add-user', function(req, res){
 	});
 })
 */
+app.get('/success', function(req, res){
+	res.render('success')
+})
+
+app.get('/error', function(req, res){
+	res.render('error')
+})
 
 app.post('/find-user', function(req, res){
 	db.query('SELECT * FROM user WHERE firstName LIKE \'%' + req.body.name + '%\' LIMIT 1;', function(err, rows, fields) {
 		if (err) throw err;
+		console.log(rows[0]);
 		if(rows.length){
-			res.render('user', { name: rows[0].firstName, img: rows[0].image});
-			
+			res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image});
+			genPdf(rows[0]).then(
+				result => res.redirect('/success'),
+				error => res.redirect('/error')
+			);
 		}else{
 			res.render('empty');
 		}
@@ -74,24 +85,26 @@ function base64_encode(file) {
 
 
 function genPdf(user){
-	jade.renderFile('./app/view/pdf.jade', {
-		name: user.firstName,
-		surname: user.lastName,
-		img: user.image
-	}, function (err, html) {
-		pdf.create(html).toBuffer(function(err, buffer){
-			var query = 'UPDATE user SET pdf="'+buffer.toString('base64')+'" WHERE id='+user.id+';';
-			db.query(query, function(err, rows, fields) {
-				if(err){
-					({status:false})
-				}
-				({status:true})
+	return new Promise((resolve, reject) => {
+		jade.renderFile('./app/view/pdf.jade', {
+			name: user.firstName,
+			surname: user.lastName,
+			img: user.image
+		}, function (err, html) {
+			pdf.create(html).toBuffer(function(err, buffer){
+				var query = 'UPDATE user SET pdf="'+buffer.toString('base64')+'" WHERE id='+user.id+';';
+				db.query(query, function(err, rows, fields) {
+					if(err){
+						reject({status:false});
+					}
+					resolve({status:true});
+				});
+			pdf.create(html).toStream(function(err, stream){
+				stream.pipe(fs.createWriteStream('./file.pdf'));
+				
 			});
-		pdf.create(html).toStream(function(err, stream){
-			stream.pipe(fs.createWriteStream('./file.pdf'));
-			
+		  });
 		});
-	  });
 	});
 }
 
