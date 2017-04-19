@@ -95,13 +95,13 @@ function genPdf(user){
 				var query = 'UPDATE user SET pdf="'+buffer.toString('base64')+'" WHERE id='+user.id+';';
 				db.query(query, function(err, rows, fields) {
 					if(err){
-						reject({status:false});
+						reject({status:true});
 					}
-					resolve({status:true});
+					resolve({status:false});
 				});
-			pdf.create(html).toStream(function(err, stream){
+			/*pdf.create(html).toStream(function(err, stream){
 				stream.pipe(fs.createWriteStream('./file.pdf'));
-			});
+			});*/
 		  });
 		});
 	});
