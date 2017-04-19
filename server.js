@@ -25,35 +25,6 @@ app.get('/', function (req, res) {
 	});
 });
 
-/*
-app.get('/add-user', function(req, res){
-	res.render('add-user');
-})
-
-app.post('/add-user', function(req, res){
-	db.query('SELECT COUNT(*) FROM user WHERE firstName="'+req.body.name+'" AND lastName="'+req.body.lastname+'";',
-		function(err, rows, fields) {
-			if (err){ throw err;}
-			else{
-				if(rows.length){
-					let query = 'INSERT INTO user(firstName, lastName, image) VALUES("'+req.body.name+'", "'+req.body.lastname+'", \'' + base64_encode('app/4.png') + '\')';
-					console.log(query);
-					db.query(query,
-						function(err, rows, fields) {
-							if (err){ throw err;}
-							res.redirect('/');
-					});
-				}else{
-					res.format({
-						'text/html': function(){
-						    res.send('<h2>This user already exist!</h2>');
-						}
-					});
-				}
-			}
-	});
-})
-*/
 app.get('/success', function(req, res){
 	res.render('success')
 })
@@ -66,7 +37,6 @@ app.post('/find-user', function(req, res){
 	db.query('SELECT * FROM user WHERE firstName LIKE \'%' + req.body.name + '%\' LIMIT 1;', function(err, rows, fields) {
 		if (err) throw err;
 		if(rows.length){
-			//res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image});
 			genPdf(rows[0]).then(
 				res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image, status: true}),
 				res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image, status: false})
@@ -99,9 +69,6 @@ function genPdf(user){
 					}
 					resolve({status:false});
 				});
-			/*pdf.create(html).toStream(function(err, stream){
-				stream.pipe(fs.createWriteStream('./file.pdf'));
-			});*/
 		  });
 		});
 	});
