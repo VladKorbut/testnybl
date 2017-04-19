@@ -65,17 +65,17 @@ app.get('/error', function(req, res){
 app.post('/find-user', function(req, res){
 	db.query('SELECT * FROM user WHERE firstName LIKE \'%' + req.body.name + '%\' LIMIT 1;', function(err, rows, fields) {
 		if (err) throw err;
-		console.log(rows[0]);
 		if(rows.length){
-			res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image});
+			//res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image});
 			genPdf(rows[0]).then(
-				result => res.redirect('/success'),
-				error => res.redirect('/error')
+				res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image, status: true}),
+				res.render('user', { name: rows[0].firstName, surname: rows[0].lastName, img: rows[0].image, status: false})
 			);
 		}else{
 			res.render('empty');
 		}
 	});
+
 })
 
 function base64_encode(file) {
@@ -101,7 +101,6 @@ function genPdf(user){
 				});
 			pdf.create(html).toStream(function(err, stream){
 				stream.pipe(fs.createWriteStream('./file.pdf'));
-				
 			});
 		  });
 		});

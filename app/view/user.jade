@@ -8,3 +8,9 @@ include header
 			label(for='name') Name:
 			input.form-control#name(placeholder='name', name='name', required)
 		button.btn.btn-primary(type='submit') search
+	if (status == true)
+		h1 #{status}
+		include success
+	else
+		h1 #{status}
+		include error
